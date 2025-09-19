@@ -1,18 +1,26 @@
-from telegram.ext import Application, MessageHandler, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-# === ערוך כאן ===
-TOKEN = "הכנס את הטוקן מה-BotFather"
-TARGET_ID = 123456789  # ה-user_id של המטריד
-# ================
+import os
+
+# עדיף למשוך מה־env ברנדר
+TOKEN = os.getenv("TOKEN")
+TARGET_ID = int(os.getenv("TARGET_ID", "0"))
+
+async def start(update, context):
+    if update.effective_user.id == TARGET_ID:
+        await update.message.reply_text(
+            "🚨 שים לב: ההודעות שלך מתועדות. הפצת מספרים או הטרדה זה עבירה פלילית. המשך בזה = דיווח + חסימה."
+        )
 
 async def warn(update, context):
-    if update.effective_chat.id == TARGET_ID:
+    if update.effective_user.id == TARGET_ID:
         await update.message.reply_text(
             "🚨 שים לב: ההודעות שלך מתועדות. הפצת מספרים או הטרדה זה עבירה פלילית. המשך בזה = דיווח + חסימה."
         )
 
 def main():
     app = Application.builder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.ALL, warn))
     app.run_polling()
 
