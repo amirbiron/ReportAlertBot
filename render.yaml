@@ -4,3 +4,8 @@ services:
     env: python
     buildCommand: ""
     startCommand: "python main.py"
+    envVars:
+      - key: TOKEN
+        sync: false
+      - key: TARGET_ID
+        sync: false
