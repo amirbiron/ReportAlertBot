@@ -1,0 +1,6 @@
+services:
+  - type: worker
+    name: warn-bot
+    env: python
+    buildCommand: ""
+    startCommand: "python main.py"
